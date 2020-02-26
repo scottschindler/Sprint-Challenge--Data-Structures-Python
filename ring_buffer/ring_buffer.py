@@ -1,5 +1,3 @@
-
-
 from doubly_linked_list import DoublyLinkedList
 
 
@@ -10,41 +8,49 @@ class RingBuffer:
         self.storage = DoublyLinkedList()
 
     def append(self, item):
-        # Check if the length = capacity so it doesn't go over max
-        # If < than capacity than add the item to the tail
-        # If it's equal to the capacity remove the head (oldest value) and add the new one to the tail (a queue)
-        if self.storage.length < self.capacity:
+        # if the item is less than capacity, add
+        if  self.storage.length < self.capacity:
+        #     # invoke the add to tail function from the dll
             self.storage.add_to_tail(item)
+        #     # set the new current to head
             self.current = self.storage.head
+        #     print('self.current as head', self.current)
+            
+
+        elif self.storage.length == self.capacity:
+            print('values', self.storage.head)
+           
+            # if not self.current:
+            self.current.value = item
+
+            if self.current is self.storage.tail:
+            #     print('self.current.value', self.current.value)
+                self.current = self.storage.head
+            else:
+                self.current = self.current.next
+                print('self.current as tail', self.current.next)
+
+        
+            
         else:
-            to_delete = self.storage.head
-            self.storage.remove_from_head()
-            self.storage.add_to_tail(item)
-            if to_delete == self.current:
-                self.current = self.storage.tail
+            self.storage.add_to_head(item)
+
 
     def get(self):
         # Note:  This is the only [] allowed
         list_buffer_contents = []
 
         # TODO: Your code here
+        curr = self.storage.head
+        if curr is None:
+            list_buffer_contents.append(curr.value)
 
-        # Start with the current value
-        # If Next is none, use the head instead (this is how the 'ring' works)
-        # Go through the list and as long sa the next node isn't the same as the initial node (or None) append the value
-        initial = self.current
-        list_buffer_contents.append(initial.value)
-
-        if initial.next is not None:
-            next_node = initial.next
-        else:
-            next_node = self.storage.head
-
-        while next_node != initial:
-            list_buffer_contents.append(next_node.value)
-            if next_node.next is not None:
-                next_node = next_node.next
-            else:
-                next_node = self.storage.head
-
+        while curr is not None:
+            print('curr value', curr.value)
+            list_buffer_contents.append(curr.value)
+            # print('self.storage.next', self.current.next)
+            # curr = self.current.next
+            curr = curr.next
+            print('curr.next', curr)
+        # list_buffer_contents.append(curr.value)
         return list_buffer_contents

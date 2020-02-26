@@ -1,4 +1,6 @@
 import time
+from binary_search_tree import BinarySearchTree
+
 
 start_time = time.time()
 
@@ -10,48 +12,33 @@ f = open('names_2.txt', 'r')
 names_2 = f.read().split("\n")  # List containing 10000 names
 f.close()
 
-# Replace the nested for loops below with your improvements
+names_bst = BinarySearchTree(names_1[0])
+duplicates = []
+
+# do two for loops
+
+# second loop will append identical names to the duplicates array
+for name_1 in names_1[1:]:
+    # use the insert method from bst to add name_1
+    names_bst.insert(name_1)
+
+for name_2 in names_2:
+    # if name_2 == to a name_1 insert the name with the bst method append!
+    if names_bst.contains(name_2): 
+        duplicates.append(name_2)
 # for name_1 in names_1:
 #     for name_2 in names_2:
 #         if name_1 == name_2:
 #             duplicates.append(name_1)
 
-def answer_1(names_1, names_2):
-    duplicates = []
-    for name in names_1:
-        if name in names_2:
-            duplicates.append(name)
-    return duplicates
-
-
-class HashMap():
-    def __init__(self):
-        self.storage = {}
-
-    def create_set(self, items):
-        i = 0
-        for item in items:
-            self.storage[item] = i
-            i += 1
-
-    def add_items(self, items):
-        i = len(self.storage)
-        duplicates = []
-        for item in items:
-            if item in self.storage:
-                duplicates.append(item)
-            else:
-                self.storage[item] = i
-                i += 1
-        return duplicates
-
-
-def answer_1b(names_1, names_2):
-    map_1 = HashMap()
-    map_1.create_set(names_1)
-    duplicates = map_1.add_items((names_2))
-    return duplicates
-
 end_time = time.time()
-# print (f"{len(duplicates)} duplicates:\n\n{', '.join(duplicates)}\n\n")
+print (f"{len(duplicates)} duplicates:\n\n{', '.join(duplicates)}\n\n")
 print (f"runtime: {end_time - start_time} seconds")
+
+# ---------- Stretch Goal -----------
+# Python has built-in tools that allow for a very efficient approach to this problem
+# What's the best time you can accomplish with no restrictions on techniques or data
+# structures?
+
+# original run time was 8 seconds with o(n^2)
+# new run time is --  runtime: 0.14606523513793945 seconds o (n)
